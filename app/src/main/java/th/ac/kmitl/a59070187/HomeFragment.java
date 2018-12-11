@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
                Log.d("test", "GOTO PROFILE");
                getActivity().getSupportFragmentManager()
                        .beginTransaction()
-                       .replace(R.id.main_view, new FriendFragment())
+                       .replace(R.id.main_view, new ProfileFragment())
                        .addToBackStack(null)
                        .commit();
            }
@@ -100,9 +100,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("test", "signout");
+                sharedPref.edit()
+                        .clear()
+                        .apply();
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.main_view, new FriendFragment())
+                        .replace(R.id.main_view, new LoginFragment())
                         .addToBackStack(null)
                         .commit();
             }
