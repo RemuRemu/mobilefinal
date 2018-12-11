@@ -53,7 +53,7 @@ public class RegisterFragment extends Fragment{
                     ).show();
                     Log.d("USER", "FIELD NAME IS EMPTY");
                 }else if (_userIDStr.length()< 6 || _userIDStr.length() > 12){
-                    Log.d("USER", "LENGTH NOT ENOUGH");
+                    Log.d("USER", "out of range : userID);
                     Toast.makeText(
                             getActivity(),
                             " ความยามขั้นต่ำ 6 ตัว และไม่เกิน 12 ตัว",
@@ -61,7 +61,7 @@ public class RegisterFragment extends Fragment{
                     ).show();
 
                 }else if (_ageInt< 10 || _ageInt >80) {
-                    Log.d("USER", "LENGTH NOT ENOUGH");
+                    Log.d("USER", "out of range : age");
                     Toast.makeText(
                             getActivity(),
                             " อายุอยู่ในช่วง 10-80",
@@ -75,11 +75,11 @@ public class RegisterFragment extends Fragment{
                             "พาสเวิร์ดต้องมากกว่า 6 ตัว",
                             Toast.LENGTH_SHORT
                     ).show();
-                } else if (!_nameStr.contains(" ")) {
-                    Log.d("USER", "ช่องว่างต้องมีแค่ 1ช่อง และ ขั้นต่ำ 1ช่อง");
+                } else if (!_nameStr.contains(" ") || _nameStr.length() < 3) {
+                    Log.d("USER", "space is missing or lenght not enough");
                     Toast.makeText(
                             getActivity(),
-                            "พาสเวิร์ดต้องมากกว่า 6 ตัว",
+                            "ช่องว่างต้องมีแค่ 1ช่อง และ ขั้นต่ำ 1ช่อง",
                             Toast.LENGTH_SHORT
                     ).show();
                 }
