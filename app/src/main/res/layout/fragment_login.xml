@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:padding="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="381dp"
+        android:layout_height="155dp"
+        app:srcCompat="@drawable/vet"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"
+        android:id="@+id/imageView" />
+
+    <EditText
+        android:inputType="text"
+        android:drawableLeft="@drawable/ic_action_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/user_id"
+        android:layout_gravity="center"
+        android:id="@+id/Login_userid"
+        />
+    <EditText
+        android:drawableLeft="@drawable/ic_action_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:layout_gravity="center"
+        android:id="@+id/Login_password"
+        />
+
+    <Button
+        android:text="@string/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_login_btn"
+        />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:text="@string/reg"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/login_register" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
