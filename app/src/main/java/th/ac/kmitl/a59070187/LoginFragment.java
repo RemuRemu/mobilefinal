@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment {
                 }
                 Cursor cursor = myDB.rawQuery("select userid, name, age, password from user where userid = '" + _userIdStr + "' and password = '" + _passwordStr + "'", null);
                 else {
-                    Log.d("final", "login failure");
+                    Log.d("test", "login failure");
                     Toast.makeText(getContext(), "username หรือ password ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
                 }
             }
