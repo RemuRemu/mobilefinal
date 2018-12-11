@@ -1,6 +1,9 @@
 package th.ac.kmitl.a59070187;
 
-
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,15 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class RegisterFragment extends Fragment{
@@ -78,7 +75,7 @@ public class RegisterFragment extends Fragment{
                             "พาสเวิร์ดต้องมากกว่า 6 ตัว",
                             Toast.LENGTH_SHORT
                     ).show();
-                } else if (!_nameStr.contains(" ") == false) {
+                } else if (!_nameStr.contains(" ")) {
                     Log.d("USER", "ช่องว่างต้องมีแค่ 1ช่อง และ ขั้นต่ำ 1ช่อง");
                     Toast.makeText(
                             getActivity(),
@@ -88,43 +85,18 @@ public class RegisterFragment extends Fragment{
                 }
                 else{
                     SQLiteDatabase myDB;
-                    @Override
-                    public void onCreate(@Nullable Bundle savedInstanceState) {
-                        super.onCreate(savedInstanceState);
-
                         myDB = getActivity().openOrCreateDatabase("my.db", Context.MODE_PRIVATE, null);
-                        myDB.execSQL("CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT,userid VARCHAR(12), name VARCHAR(50),  age INTEGER, password VARCHAR(30))");
+                        myDB.execSQL("CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT,userid VARCHAR(12), name VARCHAR(50),  age INTEGER, password VARCHAR(25))");
                         Bundle bundle = getArguments();
-                        try
-                        {
-                            status = "edit";
-                        }
-                        catch (NullPointerException e)
-                        {
-                            if (sleep == null)
-                            {
-                                status = "new";
-                            }
-                            else
-                            {
-                                Log.d("test", "null pointer : " + e.getMessage());
-                            }
-                        }
-                        Log.d("test", "status : " + status);
-
                         ContentValues row = new ContentValues();
                         row.put("userid", _userIDStr);
                         row.put("name", _nameStr);
                         row.put("age", _ageInt);
                         row.put("password", _passwordStr);
                     Log.d("USER", "GOTO HOME");
-                        if (status.equals("new"))
-                        {
-                            myDB.insert("user", null, row);
-                        }
-                        else if (status.equals("edit"))
-                        {
-                            myDB.update("sleep", row, "id="+sleep.getId(), null);
+                        myDB.insert("user", null, row);
+                        Toast.makeText(getContext(), "Register complete", Toast.LENGTH_SHORT).show();
+                        getFragmentManager().popBackStack();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_view, new LoginFragment()).commit();
 
                 }

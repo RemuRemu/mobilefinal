@@ -23,7 +23,9 @@ import com.google.firebase.auth.AuthResult;
 
 
 public class LoginFragment extends Fragment {
-    private FirebaseAuth mAuth;
+    //private FirebaseAuth mAuth;
+    SharedPreferences sharedPref;
+    SQLiteDatabase myDB;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,8 +35,11 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        myDB = getActivity().openOrCreateDatabase("my.db", Context.MODE_PRIVATE, null);
+        myDB.execSQL("CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT,userid VARCHAR(12), name VARCHAR(50),  age INTEGER, password VARCHAR(25))");
+        sharedPref = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+
         if (currentUser != null) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
@@ -48,9 +53,9 @@ public class LoginFragment extends Fragment {
         _loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                EditText _userEmail = (EditText) getView().findViewById(R.id.Login_userid);
+                EditText _userId = (EditText) getView().findViewById(R.id.Login_userid);
                 EditText _password = (EditText) getView().findViewById(R.id.Login_password);
-                String _userEmailStr = _userEmail.getText().toString();
+                String _userIdStr = _userId.getText().toString();
                 String _passwordStr = _password.getText().toString();
                 Log.d("LOGIN", "On click");
                 Log.d("LOGIN", "USER EMAIL = " + _userEmail);
@@ -61,9 +66,21 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(
                             getActivity(),"โปรดใส่อีเมลและรหัสผ่าน",Toast.LENGTH_SHORT
                     ).show();
+                }else if (cursor.moveToNext())
+                {
+                    Log.d("final", "login success");
+                    sharedPref.edit()
+                            .putString("user id", cursor.getString(0))
+                            .putString("name", cursor.getString(1))
+                            .putInt("age", cursor.getInt(2))
+                            .putString("password", cursor.getString(3))
+                            .apply();
+                    Toast.makeText(getContext(), "login success", Toast.LENGTH_SHORT).show();
                 }
+                Cursor cursor = myDB.rawQuery("select userid, name, age, password from user where userid = '" + _userIdStr + "' and password = '" + _passwordStr + "'", null);
                 else {
-                    signInWithEmail(_userEmailStr, _passwordStr);
+                    Log.d("final", "login failure");
+                    Toast.makeText(getContext(), "username หรือ password ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -78,27 +95,27 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-    void signInWithEmail(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful() && mAuth.getCurrentUser().isEmailVerified()) {
-                            Log.d("LOGIN", "LOGIN SUCCESSFUL");
-                            getActivity().getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.main_view, new MenuFragment())
-                                    .addToBackStack(null)
-                                    .commit();
-                        }
-                        else {
-                            Log.d("LOGIN", "LOGIN FAIL", task.getException());
-                            mAuth.signOut();
-                            Toast.makeText(
-                                    getActivity(),"อีเมลหรือรหัสผ่านไม่ถูกต้อง",Toast.LENGTH_SHORT
-                            ).show();
-                        }
-                    }
-                });
-    }
+//    void signInWithEmail(String email, String password) {
+//        mAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful() && mAuth.getCurrentUser().isEmailVerified()) {
+//                            Log.d("LOGIN", "LOGIN SUCCESSFUL");
+//                            getActivity().getSupportFragmentManager()
+//                                    .beginTransaction()
+//                                    .replace(R.id.main_view, new MenuFragment())
+//                                    .addToBackStack(null)
+//                                    .commit();
+//                        }
+//                        else {
+//                            Log.d("LOGIN", "LOGIN FAIL", task.getException());
+//                            mAuth.signOut();
+//                            Toast.makeText(
+//                                    getActivity(),"อีเมลหรือรหัสผ่านไม่ถูกต้อง",Toast.LENGTH_SHORT
+//                            ).show();
+//                        }
+//                    }
+//                });
+//    }
 }
