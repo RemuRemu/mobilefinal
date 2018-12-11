@@ -48,11 +48,17 @@
                 android:hint="age"
                 android:drawableLeft="@drawable/ic_action_pass"
                 android:id="@+id/reg_age"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="age"
+                android:drawableLeft="@drawable/ic_action_pass"
+                android:id="@+id/reg_password"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="password"
-                android:id="@+id/reg_password"/>
+                android:text="Submit"
+                android:id="@+id/reg_register"/>
         </LinearLayout>
     </ScrollView>
 
